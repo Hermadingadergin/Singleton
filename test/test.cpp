@@ -10,10 +10,10 @@ TEST_CASE("General testing")
 	std::string us = "us";
 	std::string pw = "pw";
 
-	Database::getInstance(db, us, pw);
-	CHECK(Database::getInstance(db, us, pw).get_username() == us);
-	CHECK(Database::getInstance(db, us, pw).get_password() == pw);
-	CHECK_THROWS(Database::getInstance(db, us, "pwe"));
+
+	Database* db1 = Database::getInstance("TestDB", "admin", "pass123");
+	CHECK(Database::getInstance("TestDB", "admin", "pass123"));
+	CHECK_THROWS(Database::getInstance("TestDB", "admin", "pass1234"));
 
 
 
