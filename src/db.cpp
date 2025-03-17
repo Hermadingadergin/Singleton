@@ -79,7 +79,7 @@ void* Database::operator new (size_t size)
 //ToDo
 void Database::operator delete(void* p)
 {
-    std::cout << "overloaded delete ";
+    std::cout << "overloaded delete";
     free(p);
 }
 
