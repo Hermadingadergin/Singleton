@@ -39,17 +39,7 @@ private:
 
      Database() = default;
 
-     // copy constructor
-     Database(const Database&);
 
-     // copy assignment operator
-     Database& operator=(const Database&);
-
-     // move constructor
-     Database(Database&&);
-
-     // move assignment operator
-     Database& operator=(Database&&);
 
      time_t last_activity;
      static const int TIMEOUT{ 5 };
@@ -101,6 +91,18 @@ public:
      // Updates the last_activity timestamp to the current time
      // Should be called whenever there is interaction with the database to reset the timeout
      void refreshConnection();
+
+     // copy constructor
+     Database(const Database&);
+
+     // copy assignment operator
+     Database& operator=(const Database&);
+
+     // move constructor
+     Database(Database&&);
+
+     // move assignment operator
+     Database& operator=(Database&&);
 
 };
 
