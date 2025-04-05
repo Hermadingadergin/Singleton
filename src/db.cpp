@@ -9,6 +9,7 @@ Database::Database(std::string database, std::string un, std::string pw)
     username = un;
     password = pw;
     connected = false;
+    last_activity = std::time(nullptr);
 }
 
 //destructor that disconnects the connection if connected.
@@ -44,6 +45,7 @@ Database* Database::getInstance(std::string database, std::string un, std::strin
 //ToDo
 void Database::connect()
 {
+    refreshConnection();
     connected = true;
 }
 
@@ -51,6 +53,7 @@ void Database::connect()
 //ToDo
 void Database::disconnect()
 {
+    refreshConnection();
     connected = false;
 }
 
@@ -58,6 +61,7 @@ void Database::disconnect()
 //ToDo
 bool Database::isConnected()
 {
+    refreshConnection();
     return connected;
 }
 
@@ -85,38 +89,86 @@ void Database::operator delete(void* p)
 
 //set_username and get_username for username
 //ToDo
-void Database::set_username(std::string un)
+const void Database::set_username(std::string un)
 {
+    refreshConnection();
     username = un;
 }
 //ToDo
-std::string Database::get_username()
+const std::string Database::get_username()
 {
+    refreshConnection();
     return username;
 }
 //set_password and get_password for password.
 //ToDo
-void Database::set_password(std::string pw)
+const void Database::set_password(std::string pw)
 {
+    refreshConnection();
     password = pw;
 }
 //ToDo
-std::string Database::get_password()
+const std::string Database::get_password()
 {
+    refreshConnection();
     return password;
 }
 
 //The static "resetInstance" as defined below.
-void Database::resetInstance()
+const void Database::resetInstance()
 {
     if (instance != nullptr) {
         delete instance;
         instance = nullptr;
     }
+    
 }
 
 Database* Database::instance = nullptr;
 
+// copy constructor
+Database::Database(const Database&)
+{
+    throw std::runtime_error("Copy constructor not allowed");
+}
+
+// copy assignment operator
+Database& Database::operator=(const Database&)
+{
+    throw std::runtime_error("Copy assignment operator not allowed");
+}
+
+// move constructor
+Database::Database(Database&&)
+{
+    throw std::runtime_error("Move constructor not allowed");
+}
+
+// move assignment operator
+Database& Database::operator=(Database&&)
+{
+    throw std::runtime_error("Move assignment operator not allowed");
+}
+
+bool Database::isTimeout()
+{
+    time_t current_time = std::time(nullptr);
+    double elapsed_time = std::difftime(current_time, last_activity);
+
+    if (elapsed_time > TIMEOUT)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+void Database::refreshConnection()
+{
+    last_activity = std::time(nullptr);
+}
 //Singleton* Singleton::instance = nullptr;
 //
 //Singleton& Singleton::get() {

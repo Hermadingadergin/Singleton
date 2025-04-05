@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <ctime>
 
 //db.h
 class Database {
@@ -36,7 +37,22 @@ private:
     //ToDo
     ~Database();
 
-    Database() = default;
+     Database() = default;
+
+     // copy constructor
+     Database(const Database&);
+
+     // copy assignment operator
+     Database& operator=(const Database&);
+
+     // move constructor
+     Database(Database&&);
+
+     // move assignment operator
+     Database& operator=(Database&&);
+
+     time_t last_activity;
+     static const int TIMEOUT{ 5 };
 public:
          
     //"getInstance" that creates and returns the instance of the database. If called first time it sets the username and password. However, subsequent time, it matches the database name, username and password and returns the previous instance if matched else it throws std::runtime_error("invalid database name, username or password"). We are using Singleton Design Pattern that creates only one instance of the databse. The instance is still created by the constructor.
@@ -66,17 +82,25 @@ public:
         
      //set_username and get_username for username
      //ToDo
-     void set_username(std::string un);
+     const void set_username(std::string un);
      //ToDo
-     std::string get_username();
+     const std::string get_username();
          //set_password and get_password for password.
      //ToDo
-     void set_password(std::string pw);
+     const const void set_password(std::string pw);
      //ToDo
-     std::string get_password();
+     const std::string get_password();
 
      //The static "resetInstance" as defined below.
-     static void resetInstance();
+     const static void resetInstance();
+
+     // Checks if the connection has been inactive for longer than TIMEOUT seconds
+     // Returns true if the timeout threshold has been exceeded, false otherwise
+     bool isTimeout();
+
+     // Updates the last_activity timestamp to the current time
+     // Should be called whenever there is interaction with the database to reset the timeout
+     void refreshConnection();
 
 };
 
