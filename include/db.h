@@ -33,9 +33,7 @@ private:
     //ToDo
     Database(std::string db, std::string un, std::string pw);
          
-    //destructor that disconnects the connection if connected.
-    //ToDo
-    ~Database();
+
 
      Database() = default;
 
@@ -77,7 +75,7 @@ public:
      const std::string get_username();
          //set_password and get_password for password.
      //ToDo
-     const const void set_password(std::string pw);
+     const void set_password(std::string pw);
      //ToDo
      const std::string get_password();
 
@@ -91,6 +89,10 @@ public:
      // Updates the last_activity timestamp to the current time
      // Should be called whenever there is interaction with the database to reset the timeout
      void refreshConnection();
+
+     //destructor that disconnects the connection if connected.
+     //ToDo
+     ~Database();
 
      // copy constructor
      Database(const Database&);
